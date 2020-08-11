@@ -1,7 +1,28 @@
 library(shiny)
+library(shinythemes)
 
-navbarPage("Shiny Introduction", inverse=TRUE,
-           tabPanel("What is Shiny?"),
+navbarPage("Shiny Introduction", theme=shinytheme("paper"),
+           tabPanel("What is Shiny?",
+                    fluidRow(
+                        column(2,
+                               HTML('<center><img src="shiny_logo.png"></center>')),
+                        column(9, offset=1,
+                               titlePanel("Shiny"),
+                               tags$b(" - R을 이용한 웹 어플리케이션 프레임워크"),
+                               br(),
+                               br(),
+                               tags$b(" - 반응성(reactivity) 모드를 디폴트로 사용하여 사용자가 입력한 값에 즉각적으로 반응"),
+                               hr(),
+                               h4("Code structure:"),
+                               verbatimTextOutput("well"),
+                               tags$b(" - UI : 브라우저를 통해 사용자와 소통하는 부분"),
+                               br(),
+                               br(),
+                               tags$b(" - Server : 사용자가 입력한 값을 가지고 실제 계산이 이루어지는 부분"),
+                               br(),
+                               br(),
+                               tags$b(" - shinyApp() : UI 코드와 서버 코드를 묶어서 실행하고, 샤이니 객체 반환환"))
+                    )),
            
            tabPanel("Widgets",
                     navlistPanel("Widgets",

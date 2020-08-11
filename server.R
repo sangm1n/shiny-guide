@@ -2,6 +2,16 @@ library(shiny)
 library(broom)
 
 function(input, output, session) {
+    output$well <- renderText({ 
+        code <- "ui <- fluidPage(...)
+        
+server <- function(input, output) {
+...
+}
+
+shinyApp(ui, server)" 
+        code
+        })
     output$textOut <- renderPrint({ input$text })
     output$numOut <- renderPrint({ input$num })
     output$slide1Out <- renderPrint({ input$slide1 })
