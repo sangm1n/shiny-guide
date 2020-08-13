@@ -1,0 +1,10 @@
+name: ShinyGuide
+title: ShinyGuide
+username:
+account: sangm1n
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 2666876
+bundleId: 3511390
+url: https://sangm1n.shinyapps.io/ShinyGuide/
+when: 1597330812.43613
