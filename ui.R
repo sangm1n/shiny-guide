@@ -1,12 +1,14 @@
 library(shiny)
 library(shinythemes)
 
-navbarPage("Shiny Introduction", theme=shinytheme("paper"),
+shinyUI(
+    navbarPage("Shiny Guide", theme=shinytheme("paper"),
+           
            tabPanel("What is Shiny?",
                     fluidRow(
-                        column(2,
+                        column(4,
                                HTML('<center><img src="shiny_logo.png"></center>')),
-                        column(9, offset=1,
+                        column(8,
                                titlePanel("Shiny"),
                                tags$b(" - R을 이용한 웹 어플리케이션 프레임워크"),
                                br(),
@@ -15,13 +17,13 @@ navbarPage("Shiny Introduction", theme=shinytheme("paper"),
                                hr(),
                                h4("Code structure:"),
                                verbatimTextOutput("well"),
-                               tags$b(" - UI : 브라우저를 통해 사용자와 소통하는 부분"),
+                               code(" - UI : 브라우저를 통해 사용자와 소통하는 부분"),
                                br(),
                                br(),
-                               tags$b(" - Server : 사용자가 입력한 값을 가지고 실제 계산이 이루어지는 부분"),
+                               code(" - Server : 사용자가 입력한 값을 가지고 실제 계산이 이루어지는 부분"),
                                br(),
                                br(),
-                               tags$b(" - shinyApp() : UI 코드와 서버 코드를 묶어서 실행하고, 샤이니 객체 반환환"))
+                               code(" - shinyApp() : UI 코드와 서버 코드를 묶어서 실행하고, 샤이니 객체 반환환"))
                     )),
            
            tabPanel("Widgets",
@@ -30,7 +32,7 @@ navbarPage("Shiny Introduction", theme=shinytheme("paper"),
                                           tabsetPanel(type="tabs",
                                                       tabPanel("Text",
                                                                br(),
-                                                               textInput("text", "input text:", value="Enter the text"),
+                                                               textInput("text", "input text:", placeholder="Enter the text"),
                                                                hr(),
                                                                fluidRow(column(7, verbatimTextOutput("textOut")))),
                                                       tabPanel("Numeric",
@@ -105,6 +107,131 @@ navbarPage("Shiny Introduction", theme=shinytheme("paper"),
                                                                )))))
                     ),
            
-           tabPanel("Reactivity"),
-           tabPanel("Layout")
-)
+           tabPanel("Layout",
+                    navlistPanel("Layout",
+                                 tabPanel("Page",
+                                          tabsetPanel(type="tabs",
+                                                      tabPanel("fluidPage",
+                                                               br(),
+                                                               wellPanel(code("- 12열 기반의 fluid grid system"), br(),
+                                                                         code("- 주로 titlePanel, sidebarLayout(sidebarPanel + mainPanel)로 구성")),
+                                                               hr(),
+                                                               fluidPage(
+                                                                   titlePanel("This is title panel"),
+                                                                   sidebarLayout(
+                                                                       sidebarPanel("This is sidebar panel"),
+                                                                       mainPanel("This is main panel")
+                                                                   )
+                                                               )),
+                                                      tabPanel("fixedPage",
+                                                               br(),
+                                                               wellPanel(code("- fluidPage가 브라우저의 전체 폭을 사용한다면 fixedPage는 한정된 공간만 사용")),
+                                                               hr()),
+                                                      tabPanel("fillPage",
+                                                               br(),
+                                                               wellPanel(code("- 브라우저의 상하, 좌우를 꽉 채워줌")),
+                                                               hr()),
+                                                      tabPanel("navbarPage",
+                                                               br(),
+                                                               wellPanel(code("- 상단 navigation bar 기능")),
+                                                               hr(),
+                                                               navbarPage("App Title",
+                                                                          tabPanel("Plot"),
+                                                                          tabPanel("Histogram"),
+                                                                          navbarMenu("More",
+                                                                                     tabPanel("Summary"),
+                                                                                     "----",
+                                                                                     "Section header",
+                                                                                     tabPanel("Table")))))),
+                                 tabPanel("High-level layout",
+                                          tabsetPanel(type="tabs",
+                                                      tabPanel("sidebarLayout",
+                                                               br(),
+                                                               wellPanel(tags$b("- 고수준 레이아웃 : 미리 준비되어 있어 별도 과정 없이 바로 사용 가능"), br(),
+                                                                         tags$b("- titlePanel : 페이지 타이틀 구성"), br(),
+                                                                         tags$b("- sidebarPanel : 입력 위젯 구성"), br(),
+                                                                         tags$b("- mainPanel : 출력물 구성")),
+                                                               hr(),
+                                                               titlePanel("Old Faithful Gevser Data"),
+                                                               sidebarLayout(
+                                                                   sidebarPanel(
+                                                                       sliderInput("bins", "Number of bins:",
+                                                                                   min=1, max=50, value=30)
+                                                                   ),
+                                                                   mainPanel(plotOutput("distPlot", height="300px"))
+                                                               )))),
+                                 tabPanel("Low-level layout",
+                                          tabsetPanel(type="tabs",
+                                                      tabPanel("Customizing",
+                                                               br(),
+                                                               wellPanel(tags$b("- fluidRow 또는 fixedRow를 이용하여 행 정의"), br(),
+                                                                         tags$b("- column : 행 안에 포함되는 열 정의 (너비 합 12)")),
+                                                               hr(),
+                                                               fluidRow(
+                                                                   column(12, "This is a single column.",
+                                                                          fluidRow(
+                                                                              column(6, "This is the first column.",
+                                                                                     fluidRow(
+                                                                                         column(3, "This is the first column."),
+                                                                                         column(3, "This is the second column.")
+                                                                                     )),
+                                                                              column(6, "This is the second column.",
+                                                                                     fluidRow(
+                                                                                         column(3, "This is the third column."),
+                                                                                         column(3, "This is the fourth column.")
+                                                                                     ))
+                                                                          )),
+                                                               ),
+                                                               img(src="fluid_grid.png")
+                                                               ))),
+                                 tabPanel("Bundle",
+                                          tabsetPanel(type="tabs",
+                                                      tabPanel("tabsetPanel",
+                                                               br(),
+                                                               titlePanel("Tabsets"),
+                                                               sidebarLayout(
+                                                                   sidebarPanel(
+                                                                       wellPanel("tabPanel / tabsetPanel")
+                                                                   ),
+                                                                   mainPanel(
+                                                                       tabsetPanel(type="tabs",
+                                                                                   tabPanel("Plot"),
+                                                                                   tabPanel("Histogram"),
+                                                                                   tabPanel("Table"),
+                                                                                   tabPanel("Summary"))
+                                                                   )
+                                                               )),
+                                                      tabPanel("navlistPanel",
+                                                               br(),
+                                                               sidebarLayout(
+                                                                   sidebarPanel(
+                                                                       navlistPanel("navlist",
+                                                                                    tabPanel("First"),
+                                                                                    tabPanel("Second"),
+                                                                                    tabPanel("Third"))
+                                                                   ),
+                                                                   mainPanel(), position="right"
+                                                               )),
+                                                      tabPanel("wellPanel",
+                                                               br(),
+                                                               wellPanel(
+                                                                   h3("This is well panel"),
+                                                                   checkboxInput("checkbox", "good", value=TRUE),
+                                                                   hr(),
+                                                                   actionButton("see", "See Code")
+                                                               )))),
+                                 tabPanel("Others",
+                                          tabsetPanel(type="tabs",
+                                                      tabPanel("Notification",
+                                                               br(),
+                                                               actionButton("show", "Show")),
+                                                      tabPanel("Modal",
+                                                               br(),
+                                                               actionButton("modal", "Show")),
+                                                      tabPanel("Progress bar",
+                                                               basicPage(
+                                                                   plotOutput("basicOut", width="500px", height="500px"),
+                                                                   actionButton("goPlot", "Go plot")
+                                                               )))))
+                    )
+))
